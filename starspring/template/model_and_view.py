@@ -22,16 +22,18 @@ class ModelAndView:
             return ModelAndView("users/list.html", {"users": users})
     """
     
-    def __init__(self, view_name: str, model: Optional[Dict[str, Any]] = None):
+    def __init__(self, view_name: str, model: Optional[Dict[str, Any]] = None, status_code: int = 200):
         """
         Initialize ModelAndView
         
         Args:
             view_name: Template file name
             model: Dictionary of model attributes
+            status_code: HTTP status code (default: 200)
         """
         self.view_name = view_name
         self.model = model or {}
+        self.status_code = status_code
     
     def add_object(self, key: str, value: Any) -> 'ModelAndView':
         """
@@ -67,3 +69,8 @@ class ModelAndView:
     def get_view_name(self) -> str:
         """Get the view name"""
         return self.view_name
+    
+    def get_status_code(self) -> int:
+        """Get the HTTP status code"""
+        return self.status_code
+
