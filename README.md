@@ -35,6 +35,44 @@ StarSpring is ideal for developers who appreciate Spring Boot's structure but pr
 
 ---
 
+## What's New in v0.2.0 🎉
+
+### Automatic Form Data Parsing
+HTML forms are now automatically parsed into Pydantic models - no more manual `await request.form()`!
+
+```python
+@PostMapping("/users")
+async def create_user(self, form: UserCreateForm):  # Automatic parsing!
+    user = await self.user_service.create(form.name, form.email, form.age)
+    return ModelAndView("success.html", {"user": user}, status_code=201)
+```
+
+### Custom HTTP Status Codes
+Set custom status codes for template responses:
+
+```python
+return ModelAndView("users/created.html", {"user": user}, status_code=201)
+return ModelAndView("errors/404.html", {"message": "Not found"}, status_code=404)
+```
+
+### HTTP Method Override
+Use PUT, PATCH, and DELETE methods in HTML forms with the `_method` field:
+
+```html
+<form action="/users/{{ user.id }}" method="POST">
+    <input type="hidden" name="_method" value="PUT">
+    <!-- form fields -->
+</form>
+```
+
+```python
+@PutMapping("/users/{id}")  # Works with HTML forms!
+async def update_user(self, id: int, form: UserForm):
+    # Handles both API requests and form submissions
+```
+
+---
+
 ## Key Features
 
 ### Dependency Injection & IoC Container
